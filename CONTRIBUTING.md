@@ -1,5 +1,20 @@
 # Contributing to Product Craft
 
+## Vision
+
+Product craft is productization of productization — applying the same engineering rigor (automation, version control, CI/CD, agent-driven workflows) to the presentational and experiential side of software that we already apply to the software itself.
+
+The components of product craft:
+
+- **Demos** — showing what a product does. Video, animated terminals, live walkthroughs. These should be code, not screen recordings. Regeneratable, not one-off.
+- **Design/UX** — how a product looks and feels. UI generation, design systems, prototyping. Increasingly expressible as markdown and agent-operable.
+- **Visuals** — 3D mockups, motion graphics, data visualizations. Scriptable via APIs and MCP servers.
+- **Research** — ongoing evaluation of tools, frameworks, and techniques. What's mature, what's emerging, what's safe to adopt.
+
+The unifying principle: every one of these should be **automatable by an AI agent**. If a tool can't be driven programmatically — installed via script, operated via CLI or MCP, uninstalled cleanly — it doesn't belong here. The goal is a toolkit where an engineer who has never done design or video work can follow a guide, run a script, and produce something polished — or hand the whole thing to an agent.
+
+Each tool in this repo is also a product in its own right (Remotion is a company, Google Stitch is a Google product, Blender is open-source software). We document them as a consumer would want to be informed: what it is, who's behind it, what it installs, what it touches, and how to fully remove it.
+
 ## Repo structure
 
 ```
