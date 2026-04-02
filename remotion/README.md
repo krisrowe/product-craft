@@ -69,17 +69,23 @@ This is Remotion's [documented approach](https://www.remotion.dev/docs/ai/skills
 
 Say **Yes** to "Add agent skills?" during the scaffolder wizard, then follow the prompts.
 
-##### Why you might avoid this
+##### Pros
 
-The scaffolder invokes the [vercel-labs/skills](https://github.com/vercel-labs/skills) CLI, which installs the Remotion skill (project-scoped, fine) but then offers a follow-up prompt: "Install the find-skills skill?" If you say Yes to that:
+- Official, documented method
+- Gets all 38 rule files with correct directory structure and symlinks
+- Automatic — no manual steps beyond answering prompts
 
-- It installs a `find-skills` skill to `~/.agents/` (user-scoped)
-- It creates symlinks into **~30 agent config directories** across your home directory — for agents you don't have installed (Cursor, Cline, Copilot, Windsurf, etc.)
-- The `find-skills` SKILL.md modifies agent behavior in every session, directing skill discovery toward the vercel-labs marketplace
+##### Cons
 
-See [Caveats](#caveats---vercel-labsskills-installer) for the full breakdown.
+- Invokes the [vercel-labs/skills](https://github.com/vercel-labs/skills) CLI, a third-party tool separate from Remotion
+- Offers a follow-up "Install the find-skills skill?" prompt that, if accepted, installs a user-scoped skill to ~30 agent config directories across your home directory (see [Caveats](#caveats---vercel-labsskills-installer))
 
-##### If you do this and want to clean up afterward
+##### Risks
+
+- If you say Yes to the find-skills follow-up: ~30 new hidden directories in your home dir, behavioral injection into every Claude/Gemini session, symlinks for agents you don't have installed
+- If you say No to the find-skills follow-up: no risk — the project-scoped remotion skill is safe
+
+##### Cleanup if needed
 
 1. Say **Yes** to "Add agent skills?" (installs remotion-best-practices, project-scoped — safe)
 2. Say **No** to "Install the find-skills skill?" — this is the follow-up that causes the home directory sprawl
@@ -107,21 +113,28 @@ The `.claude/skills/` symlink is how Claude Code discovers the skill. The `.agen
 
 #### Option B: Skip skill installation entirely
 
-Say **No** to "Add agent skills?" during the scaffolder wizard. Remotion works fine without the skill — the skill gives the agent better knowledge of Remotion APIs but is not a runtime dependency.
+Say **No** to "Add agent skills?" during the scaffolder wizard.
 
-##### What you get
+##### Pros
 
-Remotion fully functional. Claude Code can still help with Remotion code using its general training knowledge, but won't have the curated rules for specific topics (captions, transitions, audio visualization, etc.).
+- Zero risk — nothing installed beyond the Remotion project itself
+- No third-party CLI invoked
+- Remotion is fully functional without the skill
 
-##### What you miss
+##### Cons
 
-The 38 rule files cover topics like timing/interpolation, sequencing, transitions, audio, 3D, charts, fonts, and more. Without them, the agent relies on general knowledge which may be less precise or current.
+- Claude Code won't have the curated rules for specific Remotion topics (captions, transitions, audio visualization, timing, 3D, charts, fonts, etc.)
+- Agent relies on general training knowledge, which may be less precise or current than the 38 rule files
+
+##### Risks
+
+- None. You can always add the skill later via any of the other options.
 
 ---
 
 #### Option C: Point Claude at the skill source directly
 
-Instead of installing anything, launch Claude Code with a prompt that tells it to go look at the skill:
+Instead of installing the skill, launch Claude Code with a prompt that tells it to go look at it online. Remotion itself (Step 1) is still required — this only skips the skill installation:
 
 ```bash
 cd <project-dir> && claude "Check out this Remotion skill at https://github.com/remotion-dev/skills/tree/main/skills/remotion and see if you can help me build a video using these best practices"
@@ -129,7 +142,7 @@ cd <project-dir> && claude "Check out this Remotion skill at https://github.com/
 
 ##### Pros
 
-- Zero installation — nothing written to disk
+- Zero skill installation — nothing written to disk beyond what Step 1 already creates
 - Always reads the latest version
 - No cleanup needed
 - One command, no configuration
@@ -141,18 +154,33 @@ cd <project-dir> && claude "Check out this Remotion skill at https://github.com/
 - May not load all 38 rule files unless specifically asked — the SKILL.md references them with relative links that the agent would need to follow individually
 - Not persistent — you have to do this every session
 
+##### Risks
+
+- None to your filesystem. The only cost is context window usage and the possibility the agent doesn't fully absorb all rules from a single prompt.
+
 ---
 
 #### Option D: Clone and copy manually (not officially documented)
 
 Clone the Remotion skills repo, copy the files into your project, and create the discovery symlink yourself. This replicates what the official installer produces without running the vercel-labs/skills CLI.
 
-##### Important caveats
+##### Pros
 
-- **This is not an officially documented install method.** Remotion's docs only describe `npx skills add` and the scaffolder prompt. The docs do say the files are ["also available on GitHub"](https://www.remotion.dev/docs/ai/skills) with a link to the source, but do not provide manual install instructions.
-- **The skills repo has no LICENSE file.** The main Remotion repo uses a custom source-available license (see [PROVENANCE.md](PROVENANCE.md)). Whether that license applies to the skill markdown files is unclear.
+- Full skill with all 38 rule files, loaded automatically every session
+- Project-scoped — nothing touches home directory or any agent config
+- No third-party CLI invoked
+- Fully reversible with `rm`
+
+##### Cons
+
+- **Not an officially documented install method.** Remotion's docs only describe `npx skills add` and the scaffolder prompt. The docs do say the files are ["also available on GitHub"](https://www.remotion.dev/docs/ai/skills) with a link to the source, but do not provide manual install instructions.
 - **No automatic updates.** If Remotion updates the skill, you'd need to re-clone and copy manually.
 - **The source path differs from the installed name.** The files live at `skills/remotion/` in the repo but the SKILL.md declares `name: remotion-best-practices`. Our copy step accounts for this.
+
+##### Risks
+
+- **The skills repo has no LICENSE file.** The main Remotion repo uses a custom source-available license (see [PROVENANCE.md](PROVENANCE.md)). Whether that license applies to the skill markdown files is unclear.
+- If the skill structure changes in a future Remotion release, the manual copy may not match what the official installer would produce.
 
 ##### Steps
 
