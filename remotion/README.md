@@ -56,22 +56,11 @@ git commit -m "Scaffold Remotion project"
 git push -u origin main
 ```
 
-### Step 2: Agent skills (choose one approach)
+### Step 2: Agent skill (optional but recommended)
 
-The Remotion project provides an agent skill (`remotion-best-practices`) that gives Claude Code domain knowledge about Remotion APIs — text animations, timing, compositions, audio, etc. This is valuable for getting quality agent output. There are several ways to get it.
+Remotion provides an agent skill that gives AI coding agents (Claude Code, Cursor, Gemini CLI, etc.) domain knowledge about Remotion APIs. This improves the quality of agent-generated video code.
 
-> **Version reference:** This guide was written against `create-video@4.0.443` and the skills repo at commit [`d5d3955`](https://github.com/remotion-dev/skills/commit/d5d395582c6227249cec74f53ab79aca77a4ff16) (2026-03-19), package version `4.0.437`. The skill at that version contains 1 SKILL.md, 37 rule files, and 3 example .tsx assets. If Remotion changes the skill structure, steps below may need updating.
-
-**Options B, C, and D make no changes to files outside your chosen project folder** — no agent configuration, no dotfiles, no home directory modifications of any kind. Option A is the only approach that risks writing outside the project (if the find-skills follow-up prompt is accepted).
-
-| | Subject | Summary |
-|---|---------|---------|
-| **A** | [Official](install-options/A-official.md) | Remotion's documented `npx skills add` method. Automatic, but invokes a third-party CLI that may modify your home directory if you accept the find-skills follow-up prompt. |
-| **B** | [Point Claude at skill files](install-options/B-point-claude-at-skill-files.md) | Launch Claude with a prompt to read the skill from GitHub. Zero install, but burns tokens and isn't persistent. No changes outside your project folder. |
-| **C** | [Manual clone and copy](install-options/C-manual-clone-and-copy.md) | Clone the skill repo, copy files into your project. Full skill, project-scoped, no third-party CLI. Not officially documented. No changes outside your project folder. |
-| **D** | [Skip skills](install-options/D-skip-skills.md) | Don't install the skill at all. Remotion works fine — Claude can still help from general training knowledge, just without curated Remotion-specific rules. No changes outside your project folder. |
-
-Each option has detailed pros, cons, and risks in its linked file.
+**See [agent/](agent/) for setup options** — from the official installer to zero-install approaches, with pros, cons, and risks for each.
 
 ---
 

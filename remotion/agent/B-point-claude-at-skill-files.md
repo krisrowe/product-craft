@@ -1,10 +1,13 @@
-# Option C: Point Claude at the skill files directly
+# Option B: Point your agent at the skill files directly
 
-Instead of installing the skill, launch Claude Code with a prompt that tells it to go read the skill files online. Remotion itself (Step 1) is still required — this only skips the skill installation:
+Instead of installing the skill, launch your agent with a prompt that tells it to go read the skill files online. Remotion itself (Step 1) is still required — this only skips the skill installation.
 
+**Claude Code example:**
 ```bash
 cd <project-dir> && claude "Check out this Remotion skill at https://github.com/remotion-dev/skills/tree/main/skills/remotion and see if you can help me build a video using these best practices"
 ```
+
+Other agents that support web fetching can be pointed to the same URL.
 
 ## Pros
 
