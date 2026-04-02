@@ -58,6 +58,8 @@ git push -u origin main
 
 The Remotion project provides an agent skill (`remotion-best-practices`) that gives Claude Code domain knowledge about Remotion APIs — text animations, timing, compositions, audio, etc. This is valuable for getting quality agent output. There are several ways to get it.
 
+> **Version reference:** This guide was written against `create-video@4.0.443` and the skills repo at commit [`d5d3955`](https://github.com/remotion-dev/skills/commit/d5d395582c6227249cec74f53ab79aca77a4ff16) (2026-03-19), package version `4.0.437`. The skill at that version contains 1 SKILL.md, 37 rule files, and 3 example .tsx assets. If Remotion changes the skill structure, steps below may need updating.
+
 **Options B, C, and D make no changes to files outside your chosen project folder** — no agent configuration, no dotfiles, no home directory modifications of any kind. Option A is the only approach that risks writing outside the project (if the find-skills follow-up prompt is accepted).
 
 ---
@@ -74,7 +76,7 @@ Say **Yes** to "Add agent skills?" during the scaffolder wizard, then follow the
 ##### Pros
 
 - Official, documented method
-- Gets all 38 rule files with correct directory structure and symlinks
+- Gets all 37 rule files with correct directory structure and symlinks
 - Automatic — no manual steps beyond answering prompts
 
 ##### Cons
@@ -103,7 +105,7 @@ Say **Yes** to "Add agent skills?" during the scaffolder wizard, then follow the
 ```
 <project>/.agents/skills/remotion-best-practices/
 ├── SKILL.md          (skill instructions)
-└── rules/            (38 rule files — audio, video, transitions, etc.)
+└── rules/            (37 rule files — audio, video, transitions, etc.)
     └── assets/       (3 example .tsx files)
 
 <project>/.claude/skills/remotion-best-practices -> ../../.agents/skills/remotion-best-practices
@@ -127,7 +129,7 @@ Say **No** to "Add agent skills?" during the scaffolder wizard.
 ##### Cons
 
 - Claude Code won't have the curated rules for specific Remotion topics (captions, transitions, audio visualization, timing, 3D, charts, fonts, etc.)
-- Agent relies on general training knowledge, which may be less precise or current than the 38 rule files
+- Agent relies on general training knowledge, which may be less precise or current than the 37 rule files
 
 ##### Risks
 
@@ -155,7 +157,7 @@ cd <project-dir> && claude "Check out this Remotion skill at https://github.com/
 
 - Burns context window tokens every session
 - Requires the agent to fetch and process web content each time
-- May not load all 38 rule files unless specifically asked — the SKILL.md references them with relative links that the agent would need to follow individually
+- May not load all 37 rule files unless specifically asked — the SKILL.md references them with relative links that the agent would need to follow individually
 - Not persistent — you have to do this every session
 
 ##### Risks
@@ -170,7 +172,7 @@ Clone the Remotion skills repo, copy the files into your project, and create the
 
 ##### Pros
 
-- Full skill with all 38 rule files, loaded automatically every session
+- Full skill with all 37 rule files, loaded automatically every session
 - No changes to files outside your project folder — no agent configuration, no dotfiles, no home directory modifications
 - No third-party CLI invoked
 - Fully reversible with `rm`
