@@ -9,7 +9,7 @@ We use [Remotion](https://www.remotion.dev/) (React-based video framework) to cr
 - Local preview: `npm run dev` at localhost:3000
 - Renders to MP4/GIF/WebM without external services
 
-**See also:** [FAQ.md](FAQ.md) · [PROVENANCE.md](PROVENANCE.md)
+**See also:** [FAQ](FAQ.md) · [Provenance & Licensing](PROVENANCE.md)
 
 ## Project repo
 
