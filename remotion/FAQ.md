@@ -47,9 +47,17 @@ No. Remotion uses a custom "Remotion License" that is **source-available** but n
 
 The skills repo (`remotion-dev/skills`) has no LICENSE file of its own. See [PROVENANCE.md](PROVENANCE.md) for full details and quotes from the license.
 
-## What does `npm run dev` do?
+## What does `npm run dev` do? Is it the only way to see the work?
 
-It launches Remotion Studio — a local web server at http://localhost:3000 that lets you preview your video compositions in the browser. It's a development tool, not a production service. It runs only while you're working and stops when you `Ctrl+C`. No persistent service, no background daemon, nothing listening after you stop it.
+It launches Remotion Studio — a local web server at http://localhost:3000 that lets you preview your video compositions in the browser. It's a development tool for live preview during development — you see changes instantly as you edit code. It runs only while you're working and stops when you `Ctrl+C`. No persistent service, no background daemon, nothing listening after you stop it.
+
+There are three ways to see your work:
+
+1. **`npm run dev`** — live preview in browser. Fastest feedback loop — changes appear as you save files. Best for iterating on compositions.
+2. **`npx remotion still <CompositionId> out.png`** — render a single frame to an image. Quick spot-check without launching the studio.
+3. **`npx remotion render <CompositionId> out.mp4`** — render the full video to MP4/GIF. This is the final output step and takes longer (renders every frame). You wouldn't do this every time you tweak a component.
+
+The studio (`npm run dev`) is more efficient than rendering a full video each time because it only renders the frame you're looking at, in real time.
 
 ## Does the scaffolder support non-interactive (headless) installation?
 
