@@ -20,13 +20,23 @@ Each covers a specific Remotion topic with API details, code examples, and best 
 
 The full list is in the [SKILL.md on GitHub](https://github.com/remotion-dev/skills/blob/main/skills/remotion/SKILL.md).
 
-## Why does Option D need a symlink?
+## Why do Options A and D create a symlink? Do I need one?
 
-Claude Code discovers skills by scanning `<project>/.claude/skills/*/SKILL.md`. The actual skill files live in `.agents/skills/` — a platform-neutral directory that isn't specific to Claude Code (Gemini CLI, Cursor, and other agents have their own skill directories). The symlink in `.claude/skills/` is how Claude Code finds the skill. Without it, Claude doesn't know the files exist.
+All options that install the skill locally (A and D) create a symlink because Claude Code discovers skills by scanning `<project>/.claude/skills/*/SKILL.md`. The actual skill files live in `.agents/skills/` — a platform-neutral directory that isn't specific to Claude Code. The symlink in `.claude/skills/` is how Claude Code finds the skill. Without it, Claude doesn't know the files exist.
 
 This is the same structure that the official `npx skills add` installer creates. The `.agents/` directory is the canonical location; each agent gets a symlink from its own skills directory pointing there.
 
-If you only use Claude Code and don't care about the platform-neutral layout, you could skip the symlink and put the files directly in `.claude/skills/remotion-best-practices/`. But the `.agents/` + symlink pattern is what the official tooling produces and what other agents expect.
+**Alternative: skip the symlink entirely.** If you only use Claude Code, you can put the files directly in `.claude/skills/remotion-best-practices/` — no `.agents/` directory, no symlink. That works fine. The `.agents/` + symlink pattern only matters if you also want Gemini CLI or other agents to find the same skill from a shared location.
+
+## Why is the symlink a relative path instead of an absolute path?
+
+The symlink uses `../../.agents/skills/remotion-best-practices` (relative) rather than an absolute path like `~/.agents/...` because it's inside a git repo. A relative path:
+
+- Stays inside the project directory — no reference to the home dir
+- Works on any machine regardless of username or home path
+- Travels with the repo when cloned
+
+An absolute path would point outside the project and break on anyone else's machine. The relative path works because `.claude/skills/` and `.agents/skills/` have a fixed relationship within the project root.
 
 ## Is this open source?
 
