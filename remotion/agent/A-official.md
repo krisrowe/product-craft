@@ -1,5 +1,7 @@
 # Option A: Use the official `npx skills add` installer
 
+> Versions tested: see [agent/README](README.md#options)
+
 This is Remotion's [documented approach](https://www.remotion.dev/docs/ai/skills):
 
 > "You can install them by running: `npx skills add remotion-dev/skills`"

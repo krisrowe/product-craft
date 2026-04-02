@@ -176,9 +176,11 @@ This is aggressive for a one-time prompt during a video scaffolder. The director
 
 **Recommendation:** Say **No** to "Add agent skills?" during setup, or at minimum say **No** to the "Install find-skills?" follow-up prompt.
 
-## Caveats — rollback uncertainties
+## Caveats — rollback scope
 
-The rollback script and install documentation cover all **known** filesystem changes with high confidence (95%+). The remaining uncertainties:
+As tested with `create-video@4.0.443`, `skills` v1.2.0, and the skills repo at commit [`d5d3955`](https://github.com/remotion-dev/skills/commit/d5d395582c6227249cec74f53ab79aca77a4ff16) (2026-03-19):
+
+The rollback script and install documentation cover all **known** filesystem changes. The following were verified from source code and filesystem inspection:
 
 | Unknown | Risk | Specific paths | Verified | Mitigation |
 |---------|------|----------------|----------|------------|

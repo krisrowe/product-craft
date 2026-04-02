@@ -1,5 +1,7 @@
 # Option D: Skip skill installation entirely
 
+> Versions tested: see [agent/README](README.md#options)
+
 Say **No** to "Add agent skills?" during the scaffolder wizard.
 
 The install process is identical to Options B and C — the same scaffolder, the same project. The only difference is that you don't separately show Claude the skill files. Claude can still help with Remotion from its general training knowledge, just without the curated rules. This may be the quickest way to get started if you're having trouble getting Claude visibility to the skill files via the other options.

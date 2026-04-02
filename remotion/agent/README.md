@@ -8,13 +8,11 @@ The skill content is agent-agnostic — verified: zero references to Claude, Cur
 
 ## Options
 
-**Options B, C, and D make no changes to files outside your chosen project folder** — no agent configuration, no dotfiles, no home directory modifications of any kind. Option A is the only approach that risks writing outside the project (if the find-skills follow-up prompt is accepted).
-
-| | Subject | Summary |
-|---|---------|---------|
-| **A** | [Official](A-official.md) | Remotion's documented `npx skills add` method. Automatic, but invokes a third-party CLI that may modify your home directory if you accept the find-skills follow-up prompt. |
-| **B** | [Point agent at skill files](B-point-claude-at-skill-files.md) | Launch your agent with a prompt to read the skill from GitHub. Zero install, but burns tokens and isn't persistent. No changes outside your project folder. |
-| **C** | [Manual clone and copy](C-manual-clone-and-copy.md) | Clone the skill repo, copy files into your project. Full skill, project-scoped, no third-party CLI. Not officially documented. No changes outside your project folder. |
-| **D** | [Skip skill](D-skip-skills.md) | Don't install the skill at all. Remotion works fine — agents can still help from general training knowledge, just without curated Remotion-specific rules. No changes outside your project folder. |
+| | Subject | Summary | Contained to project? |
+|---|---------|---------|----------------------|
+| **A** | [Official](A-official.md) | Remotion's documented `npx skills add` method. Automatic, but invokes a third-party CLI. | Only if you decline the find-skills follow-up prompt. If accepted: modifies home directory. |
+| **B** | [Point agent at skill files](B-point-claude-at-skill-files.md) | Launch your agent with a prompt to read the skill from GitHub. Zero install, but burns tokens and isn't persistent. | Yes |
+| **C** | [Manual clone and copy](C-manual-clone-and-copy.md) | Clone the skill repo, copy files into your project. Full skill, project-scoped, no third-party CLI. Not officially documented. | Yes |
+| **D** | [Skip skill](D-skip-skills.md) | Don't install the skill at all. Remotion works fine — agents can still help from general training knowledge, just without curated Remotion-specific rules. | Yes |
 
 Each option has detailed pros, cons, and risks in its linked file.

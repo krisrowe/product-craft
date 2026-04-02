@@ -1,5 +1,7 @@
 # Option B: Point your agent at the skill files directly
 
+> Versions tested: see [agent/README](README.md#options)
+
 Instead of installing the skill, launch your agent with a prompt that tells it to go read the skill files online. Remotion itself (Step 1) is still required — this only skips the skill installation.
 
 **Claude Code example:**

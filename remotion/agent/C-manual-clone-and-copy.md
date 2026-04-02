@@ -1,4 +1,6 @@
-# Option D: Clone and copy manually (not officially documented)
+# Option C: Clone and copy manually (not officially documented)
+
+> Versions tested: see [agent/README](README.md#options)
 
 Clone the Remotion skills repo, copy the files into your project, and create the discovery symlink yourself. This replicates what the official installer produces without running the vercel-labs/skills CLI.
 
