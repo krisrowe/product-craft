@@ -121,22 +121,25 @@ The 38 rule files cover topics like timing/interpolation, sequencing, transition
 
 #### Option C: Point Claude at the skill source directly
 
-Instead of installing anything, tell Claude Code to read the skill content from GitHub at the start of a session:
+Instead of installing anything, launch Claude Code with a prompt that tells it to go look at the skill:
 
-> "Read the Remotion best practices skill at https://github.com/remotion-dev/skills/tree/main/skills/remotion and use it as reference for this project."
+```bash
+cd <project-dir> && claude "Check out this Remotion skill at https://github.com/remotion-dev/skills/tree/main/skills/remotion and see if you can help me build a video using these best practices"
+```
 
 ##### Pros
 
 - Zero installation — nothing written to disk
 - Always reads the latest version
 - No cleanup needed
+- One command, no configuration
 
 ##### Cons
 
 - Burns context window tokens every session
 - Requires the agent to fetch and process web content each time
 - May not load all 38 rule files unless specifically asked — the SKILL.md references them with relative links that the agent would need to follow individually
-- Not persistent — you have to ask every session
+- Not persistent — you have to do this every session
 
 ---
 
