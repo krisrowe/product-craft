@@ -56,7 +56,9 @@ git push -u origin main
 
 ### Step 2: Agent skills (choose one approach)
 
-The Remotion project provides an agent skill (`remotion-best-practices`) that gives Claude Code domain knowledge about Remotion APIs — text animations, timing, compositions, audio, etc. This is valuable for getting quality agent output. There are several ways to get it:
+The Remotion project provides an agent skill (`remotion-best-practices`) that gives Claude Code domain knowledge about Remotion APIs — text animations, timing, compositions, audio, etc. This is valuable for getting quality agent output. There are several ways to get it.
+
+**Options B, C, and D make no changes to files outside your chosen project folder** — no agent configuration, no dotfiles, no home directory modifications of any kind. Option A is the only approach that risks writing outside the project (if the find-skills follow-up prompt is accepted).
 
 ---
 
