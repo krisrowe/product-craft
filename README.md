@@ -2,6 +2,8 @@
 
 Tools, automation, and guides for the craft of making software products visible, demonstrable, and polished — demos, UX, visuals, and the processes that tie them together.
 
+`product-pipeline` · `product-automation` · `ux-automation` · `demo-automation` · `video-as-code` · `design-as-code`
+
 ## What this repo is
 
 A versioned, scripted, agent-friendly toolkit covering the presentational side of software products:
