@@ -13,7 +13,7 @@ We use [Remotion](https://www.remotion.dev/) (React-based video framework) to cr
 
 Remotion projects live in their own repos, separate from this documentation.
 
-## Recommended setup
+## Setup
 
 ### Principles
 
@@ -23,65 +23,173 @@ To keep it consistent with the workspace convention (`~/ws/<purpose-specific-rep
 
 1. **Dedicated repo** — one Remotion project per repo, named for its purpose (e.g., `echo-demos`, `product-videos`)
 2. **GitHub remote** — create the repo on GitHub first so it's backed up and cloneable
-3. **Decline all skills** — say No to the scaffolder's skill prompts to avoid the vercel-labs/skills side effects (see [Caveats](#caveats---vercel-labsskills-installer))
-4. **Pin the version** — use `@4.0.443` (or whatever version you tested) rather than `@latest`
+3. **Pin the version** — use `@4.0.443` (or whatever version you tested) rather than `@latest`
 
-### Step by step
+### Step 1: Scaffold the project
 
 ```bash
-# 1. Create the GitHub repo first
+# Create the GitHub repo first
 gh repo create <repo-name> --private --clone
 cd <repo-name>
 
-# 2. Scaffold Remotion into the repo
+# Scaffold Remotion into the repo
 npx create-video@4.0.443
 ```
 
 **Wizard choices:**
 - Template: **Blank**
 - TailwindCSS: **Yes**
-- **Add agent skills: No** (critical — avoids 30+ hidden directories in your home dir)
+- **Add agent skills:** see Step 2 below for options
 
 ```bash
-# 3. Install dependencies (project-local only)
+# Install dependencies (project-local only)
 npm install
 
-# 4. Verify it works
+# Verify it works
 npm run dev     # Preview at http://localhost:3000
 
-# 5. Commit and push
+# Commit and push
 git add -A
 git commit -m "Scaffold Remotion project"
 git push -u origin main
 ```
 
-### Adding the remotion-best-practices skill manually (optional)
+### Step 2: Agent skills (choose one approach)
 
-If you want the Remotion coding skill for Claude Code without the vercel-labs bloat, install it as a project-scope skill manually:
+The Remotion project provides an agent skill (`remotion-best-practices`) that gives Claude Code domain knowledge about Remotion APIs — text animations, timing, compositions, audio, etc. This is valuable for getting quality agent output. There are several ways to get it:
+
+---
+
+#### Option A: Use the official `npx skills add` installer
+
+This is Remotion's [documented approach](https://www.remotion.dev/docs/ai/skills):
+
+> "You can install them by running: `npx skills add remotion-dev/skills`"
+> "You are also offered the option to add skills when you create a new Remotion project"
+
+Say **Yes** to "Add agent skills?" during the scaffolder wizard, then follow the prompts.
+
+##### Why you might avoid this
+
+The scaffolder invokes the [vercel-labs/skills](https://github.com/vercel-labs/skills) CLI, which installs the Remotion skill (project-scoped, fine) but then offers a follow-up prompt: "Install the find-skills skill?" If you say Yes to that:
+
+- It installs a `find-skills` skill to `~/.agents/` (user-scoped)
+- It creates symlinks into **~30 agent config directories** across your home directory — for agents you don't have installed (Cursor, Cline, Copilot, Windsurf, etc.)
+- The `find-skills` SKILL.md modifies agent behavior in every session, directing skill discovery toward the vercel-labs marketplace
+
+See [Caveats](#caveats---vercel-labsskills-installer) for the full breakdown.
+
+##### If you do this and want to clean up afterward
+
+1. Say **Yes** to "Add agent skills?" (installs remotion-best-practices, project-scoped — safe)
+2. Say **No** to "Install the find-skills skill?" — this is the follow-up that causes the home directory sprawl
+3. If you accidentally said Yes to both, run [rewind-remotion.py](rewind-remotion.py) to remove the find-skills artifacts while keeping the project-scoped remotion skill intact:
+   ```bash
+   python3 rewind-remotion.py --dry-run --home ~/.agents
+   # Review, then:
+   python3 rewind-remotion.py --home ~/.agents
+   ```
+
+##### What the official install creates in your project
+
+```
+<project>/.agents/skills/remotion-best-practices/
+├── SKILL.md          (skill instructions)
+└── rules/            (38 rule files — audio, video, transitions, etc.)
+    └── assets/       (3 example .tsx files)
+
+<project>/.claude/skills/remotion-best-practices -> ../../.agents/skills/remotion-best-practices
+```
+
+The `.claude/skills/` symlink is how Claude Code discovers the skill. The `.agents/` directory is a platform-neutral location that could also be symlinked from `.gemini/skills/` if desired.
+
+---
+
+#### Option B: Skip skill installation entirely
+
+Say **No** to "Add agent skills?" during the scaffolder wizard. Remotion works fine without the skill — the skill gives the agent better knowledge of Remotion APIs but is not a runtime dependency.
+
+##### What you get
+
+Remotion fully functional. Claude Code can still help with Remotion code using its general training knowledge, but won't have the curated rules for specific topics (captions, transitions, audio visualization, etc.).
+
+##### What you miss
+
+The 38 rule files cover topics like timing/interpolation, sequencing, transitions, audio, 3D, charts, fonts, and more. Without them, the agent relies on general knowledge which may be less precise or current.
+
+---
+
+#### Option C: Point Claude at the skill source directly
+
+Instead of installing anything, tell Claude Code to read the skill content from GitHub at the start of a session:
+
+> "Read the Remotion best practices skill at https://github.com/remotion-dev/skills/tree/main/skills/remotion and use it as reference for this project."
+
+##### Pros
+
+- Zero installation — nothing written to disk
+- Always reads the latest version
+- No cleanup needed
+
+##### Cons
+
+- Burns context window tokens every session
+- Requires the agent to fetch and process web content each time
+- May not load all 38 rule files unless specifically asked — the SKILL.md references them with relative links that the agent would need to follow individually
+- Not persistent — you have to ask every session
+
+---
+
+#### Option D: Clone and copy manually (not officially documented)
+
+Clone the Remotion skills repo, copy the files into your project, and create the discovery symlink yourself. This replicates what the official installer produces without running the vercel-labs/skills CLI.
+
+##### Important caveats
+
+- **This is not an officially documented install method.** Remotion's docs only describe `npx skills add` and the scaffolder prompt. The docs do say the files are ["also available on GitHub"](https://www.remotion.dev/docs/ai/skills) with a link to the source, but do not provide manual install instructions.
+- **The skills repo has no LICENSE file.** The main Remotion repo uses a custom source-available license (see [PROVENANCE.md](PROVENANCE.md)). Whether that license applies to the skill markdown files is unclear.
+- **No automatic updates.** If Remotion updates the skill, you'd need to re-clone and copy manually.
+- **The source path differs from the installed name.** The files live at `skills/remotion/` in the repo but the SKILL.md declares `name: remotion-best-practices`. Our copy step accounts for this.
+
+##### Steps
+
+Run from inside the Remotion project directory:
 
 ```bash
-# Clone the skill source
+# 1. Clone the skills repo to a temp location (nothing written to your project yet)
 git clone --depth=1 https://github.com/remotion-dev/skills.git /tmp/remotion-skills
 
-# Copy into your project
+# 2. Create the skill directory inside your project
 mkdir -p .agents/skills/remotion-best-practices
-cp -r /tmp/remotion-skills/skills/remotion-best-practices/* .agents/skills/remotion-best-practices/
 
-# Create the project-scope symlink for Claude Code
+# 3. Copy skill files (SKILL.md + rules/) into your project
+cp -r /tmp/remotion-skills/skills/remotion/* .agents/skills/remotion-best-practices/
+
+# 4. Create the symlink so Claude Code discovers the skill
 mkdir -p .claude/skills
 ln -s ../../.agents/skills/remotion-best-practices .claude/skills/remotion-best-practices
 
-# Clean up
+# 5. Clean up the temp clone
 rm -rf /tmp/remotion-skills
 
-# Commit
+# 6. Commit
 git add .agents/ .claude/skills/
 git commit -m "Add remotion-best-practices skill (project-scope)"
 ```
 
-This gives you the skill for this project only, without touching `~/.agents/` or any other agent config directory.
+Every write is inside the project directory. Nothing touches `~/`, `~/.claude/`, `~/.agents/`, or any other agent config.
 
-### What this installs
+##### Uninstall
+
+```bash
+rm .claude/skills/remotion-best-practices
+rm -rf .agents/
+git add -A && git commit -m "Remove remotion-best-practices skill"
+```
+
+---
+
+### What the scaffolder installs (without skills)
 
 | What | Where | Scope |
 |------|-------|-------|
