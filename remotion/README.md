@@ -19,7 +19,7 @@ Remotion projects live in their own repos, separate from this documentation.
 
 Remotion is a Node.js project that lives entirely in its own directory. It uses the system Node.js (installed via Homebrew) and installs all dependencies locally in `node_modules/`. No global packages, no system-level changes, no pipx — just a standard npm project.
 
-To keep it consistent with the workspace convention (`~/ws/<purpose-specific-repo>`):
+To keep it consistent with a workspace convention (`~/src/<purpose-specific-repo>`):
 
 1. **Dedicated repo** — one Remotion project per repo, named for its purpose (e.g., `echo-demos`, `product-videos`)
 2. **GitHub remote** — create the repo on GitHub first so it's backed up and cloneable
@@ -121,6 +121,7 @@ Say **No** to "Add agent skills?" during the scaffolder wizard.
 
 - Zero risk — nothing installed beyond the Remotion project itself
 - No third-party CLI invoked
+- No changes to files outside your project folder — no agent configuration, no dotfiles, no home directory modifications
 - Remotion is fully functional without the skill
 
 ##### Cons
@@ -145,6 +146,7 @@ cd <project-dir> && claude "Check out this Remotion skill at https://github.com/
 ##### Pros
 
 - Zero skill installation — nothing written to disk beyond what Step 1 already creates
+- No changes to files outside your project folder — no agent configuration, no dotfiles, no home directory modifications
 - Always reads the latest version
 - No cleanup needed
 - One command, no configuration
@@ -169,7 +171,7 @@ Clone the Remotion skills repo, copy the files into your project, and create the
 ##### Pros
 
 - Full skill with all 38 rule files, loaded automatically every session
-- Project-scoped — nothing touches home directory or any agent config
+- No changes to files outside your project folder — no agent configuration, no dotfiles, no home directory modifications
 - No third-party CLI invoked
 - Fully reversible with `rm`
 
