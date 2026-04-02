@@ -2,7 +2,7 @@
 
 ## Vision
 
-Product craft is productization of productization — applying the same engineering rigor (automation, version control, CI/CD, agent-driven workflows) to the presentational and experiential side of software that we already apply to the software itself.
+"Product craft" is a term we're coining here, not an established industry concept. We're using it to mean: applying the same engineering rigor (automation, version control, CI/CD, agent-driven workflows) to the presentational and experiential side of software that we already apply to the software itself. Productization of productization.
 
 The components of product craft:
 
